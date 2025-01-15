@@ -18,13 +18,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-
     - name: Symlink current action repo
-      env:
-        action_path: ${{ github.action_path }}
       run: |
-        ln -fs ${{ env.action_path }}/.. .github/local_actions
+        ln -fs ${{ github.action_path }}/.. .github/local_actions
       shell: bash
+
+    - name: Install Terraform
+        if:  ${{ github.event.inputs.runners != 'self-hosted' }}
+        uses: hashicorp/setup-terraform@v3
         
     - name: Terraform init
       uses: ./.github/local_actions/terraform_init
