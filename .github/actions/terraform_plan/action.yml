@@ -24,7 +24,8 @@ runs:
       shell: bash
       run: |
         pwd
-        ls /home/runner/work/_actions/${{ github.action_repository }}/${{ github.action_ref }}
+        cd /
+        tree
 
     - name: Symlink current Actions repo
       env:
