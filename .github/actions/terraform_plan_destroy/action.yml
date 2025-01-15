@@ -1,0 +1,52 @@
+name: 'Terraform plan'
+
+inputs:
+  backend_azure_resource_group_name:
+    required: true
+  backend_azure_storage_account_name:
+    required: true
+  backend_container_name:
+    required: true
+  environment:
+    required: true
+  work_dir:
+    required: true
+  additional_tf_vars:
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Symlink current action repo
+      run: |
+        ln -fs ${{ github.action_path }}/.. .github/local_actions
+      shell: bash
+        
+    - name: Terraform init
+      uses: ./.github/local_actions/terraform_init
+      with:
+        backend_azure_resource_group_name: ${{ inputs.backend_azure_resource_group_name }}
+        backend_azure_storage_account_name: ${{ inputs.backend_azure_storage_account_name }}
+        backend_container_name: ${{ inputs.backend_container_name }}
+        work_dir: ${{ inputs.work_dir }}
+
+    - name: Terraform Validate
+      working-directory: ${{ inputs.work_dir }}
+      shell: bash
+      run: terraform validate
+
+    - name: Terraform plan
+      working-directory: ${{ inputs.work_dir }}
+      shell: bash
+      run: |
+        terraform plan -input=false -destroy \
+          -var-file="tfvars/${{ inputs.environment }}/main.tfvars" \
+          ${{ inputs.additional_tf_vars }} \
+          -out ${{ github.run_number }}.tfplan
+    
+    - name: Publish Terraform Plan
+      uses: actions/upload-artifact@v4
+      with:
+        name: tfplan
+        path: ${{ inputs.work_dir }}/${{ github.run_number }}.tfplan
