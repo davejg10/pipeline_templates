@@ -22,7 +22,9 @@ runs:
     - name: Symlink current action repo
       env:
         action_path: ${{ github.action_path }}
-      run: ln -fs ${{ env.action_path }}/.. .github/actions/
+      run: |
+        mkdir .github/actions
+        ln -fs ${{ env.action_path }}/.. .github/actions/
       shell: bash
         
     - name: Terraform init
