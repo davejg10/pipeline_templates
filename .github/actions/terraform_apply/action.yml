@@ -23,10 +23,6 @@ runs:
         name: tfplan
         path: ${{ inputs.work_dir }}
 
-    - name: Install Terraform
-        if:  ${{ github.event.inputs.runners != 'self-hosted' }}
-        uses: hashicorp/setup-terraform@v3
-
     - name: Terraform init
       uses: ./.github/local_action/terraform_init
       with:

@@ -22,10 +22,6 @@ runs:
       run: |
         ln -fs ${{ github.action_path }}/.. .github/local_actions
       shell: bash
-
-    - name: Install Terraform
-        if:  ${{ github.event.inputs.runners != 'self-hosted' }}
-        uses: hashicorp/setup-terraform@v3
         
     - name: Terraform init
       uses: ./.github/local_actions/terraform_init
