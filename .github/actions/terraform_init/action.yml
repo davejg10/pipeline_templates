@@ -15,6 +15,7 @@ runs:
   steps:
     - name: Terraform init
       working-directory: ${{ inputs.work_dir }}
+      shell: bash
       run: |
         terraform init -input=false \
           -backend-config="resource_group_name=${{ inputs.backend_azure_resource_group_name }}" \

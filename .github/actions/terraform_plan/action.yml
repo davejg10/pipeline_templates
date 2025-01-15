@@ -15,6 +15,7 @@ runs:
     - name: Terraform plan
       id: terraform_plan
       working-directory: ${{ inputs.work_dir }}
+      shell: bash
       run: |
         terraform plan -input=false \
           -var-file="tfvars/${{ inputs.environment }}/main.tfvars" \
@@ -22,7 +23,6 @@ runs:
           -out ${{ github.run_number }}.tfplan
     
     - name: Publish Terraform Plan
-      working-directory: ${{ inputs.work_dir }}
       uses: actions/upload-artifact@v4
       with:
         name: tfplan

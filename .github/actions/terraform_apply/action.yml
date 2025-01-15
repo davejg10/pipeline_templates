@@ -30,4 +30,5 @@ runs:
     - name: Terraform apply
       id: terraform_plan
       working-directory: ${{ inputs.work_dir }}
+      shell: bash
       run: terraform apply -lock-timeout=300s ${{ github.run_number }}.tfplan
