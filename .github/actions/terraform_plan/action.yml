@@ -24,7 +24,7 @@ runs:
       shell: bash
       run: |
         pwd
-        cd /
+        cd ../../../../../../../../../../
         tree
 
     - name: Symlink current Actions repo
