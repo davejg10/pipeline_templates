@@ -19,7 +19,7 @@ runs:
       run: |
         terraform plan -input=false \
           -var-file="tfvars/${{ inputs.environment }}/main.tfvars" \
-          ${{ additional_tf_vars }} \
+          ${{ inputs.additional_tf_vars }} \
           -out ${{ github.run_number }}.tfplan
     
     - name: Publish Terraform Plan
