@@ -1,0 +1,22 @@
+name: 'Terraform init'
+
+inputs:
+  backend_azure_resource_group_name:
+    required: true
+  backend_azure_storage_account_name:
+    required: true
+  backend_container_name:
+    required: true
+  work_dir:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform init
+      working-directory: ${{ inputs.work_dir }}
+      run: |
+        terraform init -input=false \
+          -backend-config="resource_group_name=${{ inputs.backend_azure_resource_group_name }}" \
+          -backend-config="storage_account_name=${{ inputs.backend_azure_storage_account_name }}" \
+          -backend-config="container_name=${{ inputs.backend_container_name }}"

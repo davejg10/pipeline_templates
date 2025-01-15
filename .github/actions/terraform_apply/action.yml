@@ -1,0 +1,33 @@
+name: 'Terraform apply'
+
+inputs:
+  backend_azure_resource_group_name:
+    required: true
+  backend_azure_storage_account_name:
+    required: true
+  backend_container_name:
+    required: true
+  work_dir:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: tfplan
+        path: ${{ inputs.work_dir }}
+
+    - name: Terraform init
+      uses: ../terraform_init
+      with:
+        backend_azure_resource_group_name: ${{ inputs.backend_azure_resource_group_name }}
+        backend_azure_storage_account_name: ${{ inputs.backend_azure_storage_account_name }}
+        backend_container_name: ${{ inputs.backend_container_name }}
+        work_dir: ${{ inputs.work_dir }}
+
+    - name: Terraform apply
+      id: terraform_plan
+      working-directory: ${{ inputs.work_dir }}
+      run: terraform apply -lock-timeout=300s ${{ github.run_number }}.tfplan
