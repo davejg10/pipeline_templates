@@ -33,13 +33,13 @@ runs:
       shell: bash
       run: ln -s /home/runner/work/_actions/$GH_ACTION_REPO/$GH_ACTION_REF/  /home/runner/work/_actions/current
 
-    - name: Terraform init
-      uses: ../terraform_init
-      with:
-        backend_azure_resource_group_name: ${{ inputs.backend_azure_resource_group_name }}
-        backend_azure_storage_account_name: ${{ inputs.backend_azure_storage_account_name }}
-        backend_container_name: ${{ inputs.backend_container_name }}
-        work_dir: ${{ inputs.work_dir }}
+    # - name: Terraform init
+    #   uses: ../terraform_init
+    #   with:
+    #     backend_azure_resource_group_name: ${{ inputs.backend_azure_resource_group_name }}
+    #     backend_azure_storage_account_name: ${{ inputs.backend_azure_storage_account_name }}
+    #     backend_container_name: ${{ inputs.backend_container_name }}
+    #     work_dir: ${{ inputs.work_dir }}
 
     - name: Terraform Validate
       working-directory: ${{ inputs.work_dir }}
