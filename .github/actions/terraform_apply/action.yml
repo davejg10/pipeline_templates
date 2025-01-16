@@ -13,14 +13,18 @@ inputs:
 runs:
   using: "composite"
   steps:
-
+    - name: Symlink current action repo
+      run: |
+        ln -fs ${{ github.action_path }}/.. .github/local_actions
+      shell: bash
+        
     - uses: actions/download-artifact@v4
       with:
         name: tfplan
         path: ${{ inputs.work_dir }}
 
     - name: Terraform init
-      uses: ../terraform_init
+      uses: ./.github/local_actions/terraform_init
       with:
         backend_azure_resource_group_name: ${{ inputs.backend_azure_resource_group_name }}
         backend_azure_storage_account_name: ${{ inputs.backend_azure_storage_account_name }}

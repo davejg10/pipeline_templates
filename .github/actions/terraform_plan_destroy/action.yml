@@ -40,7 +40,7 @@ runs:
       working-directory: ${{ inputs.work_dir }}
       shell: bash
       run: |
-        terraform plan -input=false \
+        terraform plan -input=false -destroy \
           -var-file="tfvars/${{ inputs.environment }}/main.tfvars" \
           ${{ inputs.additional_tf_vars }} \
           -out ${{ github.run_number }}.tfplan
